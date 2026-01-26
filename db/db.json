@@ -1,113 +1,128 @@
 {
-    "subs": [
-        {
-            "id": "1",
-            "name": "vocaloid",
-            "subId": null,
-            "description": "The Vocaloid (VocaSynth in general) sub"
-        },
-        {
-            "id": "2",
-            "name": "games",
-            "subId": null,
-            "description": "Gaming sub"
-        },
-        {
-            "id": "3",
-            "name": "ClairObscurE33",
-            "subId": "2",
-            "description": "Clair Obscur: Expedition 33 sub"
-        },
-        {
-            "id": "4",
-            "name": "music",
-            "subId": null,
-            "description": "Music sub"
-        },
-        {
-            "id": "5",
-            "name": "anime",
-            "subId": null,
-            "description": "Anime sub"
-        },
-        {
-            "id": "6",
-            "name": "projectDIVA",
-            "subId": "2",
-            "description": "Hatsune Miku Project Diva sub"
-        },
-        {
-            "id": "7",
-            "name": "projectSEKAI",
-            "subId": "2",
-            "description": "Hatsune Miku Projet SEKAI (or ColorfulStage) sub"
-        },
-        {
-            "id": "8",
-            "name": "test",
-            "subId": null,
-            "description": "A test sub"
-        },
-        {
-            "id": "9",
-            "name": "subtest",
-            "subId": "8",
-            "description": "A test sub sub"
-        },
-        {
-            "id": "10",
-            "name": "subsubtest",
-            "subId": "9",
-            "description": "A test sub sub sub"
-        },
-        {
-            "id": "11",
-            "name": "subsubsubtest",
-            "subId": "10",
-            "description": "A test sub sub sub sub sub"
-        }
-    ],
-    "builtin_sub": [
-        {
-            "name": "dev",
-            "description": "Devloppment (Code)"
-        },
-        {
-            "name": "art",
-            "description": "Art (Images)"
-        },
-        {
-            "name": "text",
-            "description": "Text (stories, ...)"
-        },
-        {
-            "name": "music",
-            "description": "Music"
-        },
-        {
-            "name": "animations",
-            "description": "2d/3d animations"
-        },
-        {
-            "name": "other",
-            "description": "Other things"
-        }
-    ],
-    "virtual_sub": [
-        {
-            "subId": "4",
-            "name": "vocaloid",
-            "targetId": "1"
-        },
-        {
-            "subId": "2",
-            "name": "vocaloid",
-            "targetId": "5"
-        },
-        {
-            "subId": "2",
-            "name": "vocaloid",
-            "targetId": "6"
-        }
-    ]
+  "subs": [
+    {
+      "id": "1",
+      "name": "vocaloid",
+      "subId": null,
+      "description": "The Vocaloid (VocaSynth in general) sub"
+    },
+    {
+      "id": "2",
+      "name": "games",
+      "subId": null,
+      "description": "Gaming sub"
+    },
+    {
+      "id": "3",
+      "name": "ClairObscurE33",
+      "subId": "2",
+      "description": "Clair Obscur: Expedition 33 sub"
+    },
+    {
+      "id": "4",
+      "name": "music",
+      "subId": null,
+      "description": "Music sub"
+    },
+    {
+      "id": "5",
+      "name": "anime",
+      "subId": null,
+      "description": "Anime sub"
+    },
+    {
+      "id": "6",
+      "name": "projectDIVA",
+      "subId": "2",
+      "description": "Hatsune Miku Project Diva sub"
+    },
+    {
+      "id": "7",
+      "name": "projectSEKAI",
+      "subId": "2",
+      "description": "Hatsune Miku Projet SEKAI (or ColorfulStage) sub"
+    },
+    {
+      "id": "8",
+      "name": "test",
+      "subId": null,
+      "description": "A test sub"
+    },
+    {
+      "id": "9",
+      "name": "subtest",
+      "subId": "8",
+      "description": "A test sub sub"
+    },
+    {
+      "id": "10",
+      "name": "subsubtest",
+      "subId": "9",
+      "description": "A test sub sub sub"
+    },
+    {
+      "id": "11",
+      "name": "subsubsubtest",
+      "subId": "10",
+      "description": "A test sub sub sub sub sub"
+    }
+  ],
+  "builtin_sub": [
+    {
+      "name": "dev",
+      "description": "Devloppment (Code)",
+      "id": "66f4"
+    },
+    {
+      "name": "art",
+      "description": "Art (Images)",
+      "id": "0b9b"
+    },
+    {
+      "name": "text",
+      "description": "Text (stories, ...)",
+      "id": "01c5"
+    },
+    {
+      "name": "music",
+      "description": "Music",
+      "id": "6d55"
+    },
+    {
+      "name": "animations",
+      "description": "2d/3d animations",
+      "id": "c005"
+    },
+    {
+      "name": "other",
+      "description": "Other things",
+      "id": "5f1d"
+    }
+  ],
+  "virtual_sub": [
+    {
+      "subId": "4",
+      "name": "vocaloid",
+      "targetId": "1",
+      "id": "b706"
+    },
+    {
+      "subId": "1",
+      "name": "projectSEKAI",
+      "targetId": "7",
+      "id": "4c91"
+    },
+    {
+      "subId": "1",
+      "name": "projectDIVA",
+      "targetId": "6",
+      "id": "fac2"
+    },
+    {
+      "subId": "6",
+      "name": "vocaloid",
+      "targetId": "1",
+      "id": "b0d4"
+    }
+  ]
 }

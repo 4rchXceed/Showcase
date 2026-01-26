@@ -1,7 +1,36 @@
 import { get } from "$lib/net/requ_server";
 import type { Sub } from "$lib/types/db/sub";
 
+/**
+ * Gett the *real* element of a Sub (not a virtual one), helps for sub creation, so we know where to put it
+ * @param sub The sub to get the real element from
+ * @param fetch The svelte fetch function
+ * @returns The real element Sub, or null if root
+ */
+export async function getRealElement(sub: Sub, fetch: typeof globalThis.fetch): Promise<Sub | null> {
+    if (!sub) {
+        return null;
+    }
 
+    if (sub.isVirtual) {
+        const requ = await get(`subs/${sub.subId}`, fetch);
+        if (requ && requ as Sub) {
+            return requ as Sub;
+        } else {
+            return null;
+        }
+    }
+    return sub;
+}
+
+/**
+ * Recursive function to resolve each segments (/) of a path
+ * @param currentSub The Sub obj, with the parents as sub.parent
+ * @param segments The segments of the path (vocaloid/miku -> ["vocaloid", "miku", ...])
+ * @param index Current index in the segments array
+ * @param fetch The svelte fetch function
+ * @returns The Sub object or null if not found
+ */
 async function next(currentSub: Sub, segments: string[], index: number, fetch: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>): Promise<Sub | null> {
     if (index >= segments.length) {
         return currentSub;
@@ -10,22 +39,47 @@ async function next(currentSub: Sub, segments: string[], index: number, fetch: (
     const requ = await get(`subs/${currentSub.id}?_embed=subs`, fetch);
     if (requ && requ as Sub) {
         const sub = requ as Sub;
+        let found = false;
         if (sub.subs) {
             for (const subSub of sub.subs) {
                 if (subSub.name === nextSegment) {
+                    subSub.fullPath = currentSub.fullPath ? `${currentSub.fullPath}/${subSub.name}` : subSub.name;
                     subSub.parent = currentSub;
+                    found = true;
                     return await next(subSub, segments, index + 1, fetch);
                 }
             }
         }
+
+        if (!found) { // Try virtual subs
+            const virtualRequ = await get(`virtual_sub?subId=${currentSub.id}`, fetch);
+            if (virtualRequ && virtualRequ as Sub[]) {
+                const subs = virtualRequ as Sub[];
+                for (const sub of subs) {
+                    if (sub.name === nextSegment) {
+                        sub.fullPath = currentSub.fullPath ? `${currentSub.fullPath}/${sub.name}` : sub.name;
+                        sub.parent = currentSub;
+                        sub.isVirtual = true;
+                        sub.description = "(Virtual Link)";
+                        sub.id = sub.targetId; // Small "hack" to make virtual subs work properly
+
+                        found = true;
+                        return await next(sub, segments, index + 1, fetch);
+                    }
+                }
+            }
+        }
+
     }
     return null;
 }
 
-async function fetchSubByName(name: String): Promise<Sub | null> {
+async function fetchSubByName(name: string, fetch: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>): Promise<Sub | null> {
     const res = await get(`subs?name=${name}`, fetch);
     if (res && Array.isArray(res) && res.length > 0) {
-        return res[0] as Sub;
+        const sub = res[0] as Sub;
+        sub.fullPath = name;
+        return sub;
     }
     return null;
 }
@@ -34,12 +88,13 @@ async function fetchSubByName(name: String): Promise<Sub | null> {
 /**
  * Resolves a path to its corresponding Sub (and sub-subs).
  * @param path The path (e.g. /vocaloid/miku).
+ * @param fetch The svelte fetch function.
  * @returns The sub, with his sub-subs, or null
  */
-export async function resolvePath(path: string): Promise<Sub | null> {
+export async function resolvePath(path: string, fetch: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>): Promise<Sub | null> {
     const segments = path ? path.split('/') : [];
     if (segments.length > 0) {
-        const root = await fetchSubByName(segments[0]);
+        const root = await fetchSubByName(segments[0], fetch);
         if (root) {
             if (segments.length === 1) {
                 return root;

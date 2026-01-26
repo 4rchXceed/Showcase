@@ -1,12 +1,15 @@
 <script lang="ts">
-    import type { Sub } from "$lib/types/db/sub";
+    import SubList from "$lib/components/SubList.svelte";
     import type { SubHomepageData } from "$lib/types/sub_homepage";
 
     export let data: SubHomepageData;
 </script>
 
 {#if data.subs}
-    <h1>ShowCase - {data.full}</h1>
+    <h1>ShowCase - s/{data.full}</h1>
+    <!-- Back Button -->
+    <a href={"/s/" + data.full.substring(0, data.full.lastIndexOf("/"))}>Back</a
+    >
     <article class="overflowtxt hover-card-anim">
         <header>
             <img
@@ -14,9 +17,11 @@
                 class="img-round"
                 alt=""
             />
-            {data.subs.name}
+            s/{data.subs.name}
         </header>
         {data.subs.description}
+        <hr />
+        <SubList subs={data.childs} />
     </article>
 {:else}
     <h1>404: Not Found</h1>

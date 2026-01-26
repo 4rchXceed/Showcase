@@ -5,22 +5,22 @@ A Reddit-type website to showcase some cool projects, arts, ...
 ### Vocabulary
 
 - Sub: sub-community
-- root sub: Sub with no parents (/s/[a-zA-Z0-9]+)
+- root sub: Sub with no parents (s/[a-zA-Z0-9]+)
 
 ## How will it work?
 
 ### The community system
 ```
                         / -> Show the top popular posts
-    /s/vocaloid                   /s/games
-                                        /s/games/clairobscure33     ...
-/s/vocaloid/dev /s/vocaloid/art...
+    s/vocaloid                   s/games
+                                        s/games/clairobscure33     ...
+s/vocaloid/dev s/vocaloid/art...
 ```
 
-But the community system is different from Reddit, because there's sub-categories (e.g. /s/games/clairobscure33 is a sub from /s/games).
+But the community system is different from Reddit, because there's sub-categories (e.g. s/games/clairobscure33 is a sub from s/games).
 You can post on:
 - A final sub (without childs), within it's builtin category (see builtin categories)
-- A sub with childs (e.g. /s/games), also within it's builtin category
+- A sub with childs (e.g. s/games), also within it's builtin category
 
 ### The post system
 
@@ -43,7 +43,7 @@ And there's builtin categories:
 ### The virtual link system
 If a sub can also be in another category, you can create a virtual link between the parent and the child.
 
-Example, the /s/vocaloid is root sub, but it can also be in /s/music, you can create a virtual link from /s/music/jp_vocaloid -> /s/vocaloid
+Example, the s/vocaloid is root sub, but it can also be in s/music, you can create a virtual link from s/music/jp_vocaloid -> s/vocaloid
 
 ### The user
 
@@ -73,8 +73,11 @@ At first, I'll do the community system
 ### Pages
 / -> Shows some root subs in a header (the main/posts will be added in part 2)
 /s/[a-zA-Z0-9/]+
-/_/s/new -> Create a new sub
-/s/[a-zA-Z0-9/]+/_/delete -> Delete a sub
+
+/s/[a-zA-Z0-9/]*/\_/new -> Create a new sub (/s/_ -> root sub creation)
+
+/s/[a-zA-Z0-9/]+/\_/delete -> Delete a sub
+
 
 ### Tables
 
