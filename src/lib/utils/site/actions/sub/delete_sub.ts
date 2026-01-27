@@ -1,7 +1,9 @@
-import { _delete, get } from "$lib/net/requ_server";
-import { getSubChilds as getSubChildren } from "$lib/site/get_childs";
-import { getRealElement } from "$lib/site/resolvepath";
-import type { Sub } from "$lib/types/db/sub";
+import { goto } from "$app/navigation";
+import { _delete, get } from "$lib/utils/net/requ_server";
+import { toAbsolutePath } from "$lib/utils/path_utils";
+import { getSubChilds as getSubChildren } from "$lib/utils/site/get_childs";
+import { getRealElement } from "$lib/utils/site/resolvepath";
+import type { Sub } from "$lib/utils/types/db/sub";
 import Swal from "sweetalert2";
 
 
@@ -79,12 +81,17 @@ async function deleteSub(sub: Sub, fetch: typeof globalThis.fetch): Promise<bool
 }
 
 export async function deleteSubWithChilds(sub: Sub, fetch: typeof globalThis.fetch): Promise<boolean> {
+    if (sub.isVirtual) { // We don't delete virtual subs
+        return false;
+    }
     let realSub = await getRealElement(sub, fetch);
     if (!realSub) {
         realSub = sub; // Root subs
     }
     const subsToDelete = await getRemoveSubSecure(realSub, fetch, true);
+
     if (!subsToDelete) {
+        location.href = toAbsolutePath("../../"); // Set the location to the parent (_/delete)
         return false; // User cancelled
     }
 
@@ -102,6 +109,21 @@ export async function deleteSubWithChilds(sub: Sub, fetch: typeof globalThis.fet
         title: "Success...",
         text: `Sub s/${sub.fullPath} and its childs (${subsToDelete.length}) have been deleted successfully.`,
     });
-    location.reload(); // Reload to show the changes
+    location.href = toAbsolutePath("../../../"); // Set the location to the parent (_/delete)
     return true;
+}
+
+export async function deleteVirtualSub(sub: Sub, fetch: typeof globalThis.fetch): Promise<boolean> {
+    if (!sub.isVirtual || !sub.originalId) return false;
+    const requ = await _delete(`virtual_sub/${sub.originalId}`, fetch);
+    if (requ) {
+        await Swal.fire({
+            icon: "success",
+            title: "Success...",
+            text: `Virtual sub link s/${sub.fullPath} has been deleted.`,
+        });
+    }
+    location.href = toAbsolutePath("../../../"); // Set the location to the parent (_/delete)
+
+    return requ !== null;
 }

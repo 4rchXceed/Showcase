@@ -1,0 +1,9 @@
+- [X] Sub browse
+- [X] Sub add
+- [X] Sub remove
+- [ ] Root sub or link creation
+- [ ] Sub modification
+- [ ] Builtin sub browse
+- [ ] Codebase
+- [ ] All error messages in 1 place
+- [ ] If delete delete all links

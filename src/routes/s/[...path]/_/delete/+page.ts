@@ -1,7 +1,5 @@
-import { getSubChilds } from '$lib/site/get_childs';
-import { resolvePath } from '$lib/site/resolvepath';
-import type { DeleteSubPageData } from '$lib/types/delete_sub';
-import type { NewSubPageData } from '$lib/types/new_sub';
+import { resolvePath } from '$lib/utils/site/resolvepath';
+import type { DeleteSubPageData } from '$lib/utils/types/delete_sub';
 import type * as Kit from '@sveltejs/kit';
 
 export const load: Kit.Load<{ path?: string | undefined }> = async ({ params, fetch }): Promise<DeleteSubPageData> => {

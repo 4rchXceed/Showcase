@@ -1,5 +1,5 @@
-import type { Sub } from "$lib/types/db/sub";
-import { resolvePath } from "$lib/site/resolvepath";
+import type { Sub } from "$lib/utils/types/db/sub";
+import { resolvePath } from "$lib/utils/site/resolvepath";
 import { getSubChilds } from "./get_childs";
 
 

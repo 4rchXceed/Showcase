@@ -1,14 +1,15 @@
 <script lang="ts">
+    import { toAbsolutePath } from "$lib/utils/path_utils";
     import {
         createSub,
         createVirtualSub,
-    } from "$lib/site/actions/sub/create_sub";
-    import { autoComplete } from "$lib/site/autocomplete";
-    import { resolvePath } from "$lib/site/resolvepath";
-    import type { Sub } from "$lib/types/db/sub";
+    } from "$lib/utils/site/actions/sub/create_sub";
+    import { autoComplete } from "$lib/utils/site/autocomplete";
+    import { resolvePath } from "$lib/utils/site/resolvepath";
+    import type { Sub } from "$lib/utils/types/db/sub";
 
     // TODO: Handle if the user is accessing the url with a virtual sub in the path
-    import type { NewSubPageData } from "$lib/types/new_sub";
+    import type { NewSubPageData } from "$lib/utils/types/new_sub";
     import Swal from "sweetalert2";
 
     export let data: NewSubPageData;
@@ -31,25 +32,65 @@
     let timeout: ReturnType<typeof setTimeout> | null = null;
 
     async function onCreateClick() {
-        if (!data.subs) return; // To make VSCode happy
-        if (formData.isVirtual) {
-            // A: Perform validation
-            if (formData.vSubQuery.startsWith("s/")) {
-                formData.vSubQuery = formData.vSubQuery.substring(2);
-            }
-
-            const targetSub = await resolvePath(formData.vSubQuery, fetch);
-
-            if (!targetSub) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Target Sub not found",
-                    text: `The target sub "${formData.vSubQuery}" does not exist.`,
-                });
-            } else {
-                if (!formData.vSubQuery.startsWith("s/")) {
-                    formData.vSubQuery = "s/" + formData.vSubQuery;
+        if (!data.subs && data.full.length !== 0) return; // To make VSCode happy
+        if (!formData.subName.match(/[a-zA-Z0-9]+/)) {
+            Swal.fire({
+                icon: "error",
+                title: "Invalid subname",
+                text: "The sub name should have ONLY: characters from a to z (A-Z also) and 0-9, > than 1",
+            });
+        } else {
+            if (formData.isVirtual) {
+                // A: Perform validation
+                if (formData.vSubQuery.startsWith("s/")) {
+                    formData.vSubQuery = formData.vSubQuery.substring(2);
                 }
+
+                const targetSub = await resolvePath(formData.vSubQuery, fetch);
+
+                if (!targetSub) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Target Sub not found",
+                        text: `The target sub "${formData.vSubQuery}" does not exist.`,
+                    });
+                } else {
+                    if (!formData.vSubQuery.startsWith("s/")) {
+                        formData.vSubQuery = "s/" + formData.vSubQuery;
+                    }
+                    let alreadyExists = false;
+                    for (const child of data.childs) {
+                        // Case-Sensitive
+                        if (child.name === formData.subName) {
+                            alreadyExists = true;
+                            break;
+                        }
+                    }
+                    if (alreadyExists) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Sub already exists",
+                            text: `A sub with the name "${formData.subName}" already exists under s/${data.full}.`,
+                        });
+                    } else {
+                        // B: Send creation request
+                        const createdSub = await createVirtualSub(
+                            data.subs,
+                            targetSub,
+                            formData.subName,
+                            fetch,
+                        );
+                        if (createdSub) {
+                            await Swal.fire({
+                                icon: "success",
+                                title: "Sub link created!",
+                                text: `Virtual sub s/${data.full + "/" + createdSub.name} pointing to s/${targetSub.fullPath} created successfully!`,
+                            });
+                            location.href = toAbsolutePath("../../");
+                        } // No else, the createVirtualSub already handled the error display
+                    }
+                }
+            } else {
                 let alreadyExists = false;
                 for (const child of data.childs) {
                     // Case-Sensitive
@@ -66,53 +107,21 @@
                     });
                 } else {
                     // B: Send creation request
-                    const createdSub = await createVirtualSub(
-                        data.subs,
-                        targetSub,
+                    const sub = await createSub(
                         formData.subName,
+                        data.subs,
+                        formData.description,
                         fetch,
                     );
-                    if (createdSub) {
+                    if (sub) {
                         await Swal.fire({
                             icon: "success",
-                            title: "Sub link created!",
-                            text: `Virtual sub s/${data.full + "/" + createdSub.name} pointing to s/${targetSub.fullPath} created successfully!`,
+                            title: "Sub created!",
+                            text: `Sub s/${data.full}/${sub.name} created successfully!`,
                         });
-                        location.reload(); // Reload to show the new virtual sub
-                    } // No else, the createVirtualSub already handled the error display
+                        location.href = toAbsolutePath("../../");
+                    } // No else, the createSub already handled the error display
                 }
-            }
-        } else {
-            let alreadyExists = false;
-            for (const child of data.childs) {
-                // Case-Sensitive
-                if (child.name === formData.subName) {
-                    alreadyExists = true;
-                    break;
-                }
-            }
-            if (alreadyExists) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Sub already exists",
-                    text: `A sub with the name "${formData.subName}" already exists under s/${data.full}.`,
-                });
-            } else {
-                // B: Send creation request
-                const sub = await createSub(
-                    formData.subName,
-                    data.subs,
-                    formData.description,
-                    fetch,
-                );
-                if (sub) {
-                    await Swal.fire({
-                        icon: "success",
-                        title: "Sub created!",
-                        text: `Sub s/${data.full}/${sub.name} created successfully!`,
-                    });
-                    location.reload(); // Reload to show the new sub
-                } // No else, the createSub already handled the error display
             }
         }
     }
@@ -143,9 +152,10 @@
     }
 </script>
 
-{#if data.subs !== null}
+{#if data.subs !== null || data.full.length === 0}
     <h1>Sub creation</h1>
     <article>
+        <a href={"/s/" + data.full}>Back</a>
         <form
             on:submit={(e) => {
                 e.preventDefault();
@@ -229,36 +239,6 @@
 {/if}
 
 <style>
-    .df {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .autocomplete {
-        border: 1px solid #ccc;
-        max-height: 150px;
-        overflow-y: auto;
-        position: relative;
-        padding: 10px;
-    }
-
-    .autocomplete ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-    }
-
-    .autocomplete li {
-        padding: 5px 0;
-        text-align: center;
-    }
-
-    .autocomplete li:hover {
-        background-color: var(--pico-secondary-background);
-        color: var(--pico-secondary);
-        cursor: pointer;
-    }
-
     textarea {
         resize: none;
     }

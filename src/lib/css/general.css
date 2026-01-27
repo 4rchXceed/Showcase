@@ -1,5 +1,45 @@
+:root {
+    --danger-color: rgb(184, 45, 45);
+}
+
 .img-round {
     border-radius: 100%;
     border: 3px solid black;
     box-sizing: border-box;
+}
+
+.df {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-nostyle {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
+
+.autocomplete {
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    position: relative;
+    padding: 10px;
+}
+
+.autocomplete ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.autocomplete li {
+    padding: 5px 0;
+    text-align: center;
+}
+
+.autocomplete li:hover {
+    background-color: var(--pico-primary-hover-background);
+    color: white;
+    cursor: pointer;
 }

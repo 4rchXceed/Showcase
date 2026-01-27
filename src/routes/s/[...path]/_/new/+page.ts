@@ -1,6 +1,6 @@
-import { getSubChilds } from '$lib/site/get_childs';
-import { resolvePath } from '$lib/site/resolvepath';
-import type { NewSubPageData } from '$lib/types/new_sub';
+import { getSubChilds } from '$lib/utils/site/get_childs';
+import { resolvePath } from '$lib/utils/site/resolvepath';
+import type { NewSubPageData } from '$lib/utils/types/new_sub';
 import type * as Kit from '@sveltejs/kit';
 
 export const load: Kit.Load<{ path?: string | undefined }> = async ({ params, fetch }): Promise<NewSubPageData> => {

@@ -1,8 +1,12 @@
 <script lang="ts">
+    import { goto } from "$app/navigation";
     import SubList from "$lib/components/SubList.svelte";
-    import type { SubHomepageData } from "$lib/types/sub_homepage";
+    import { toAbsolutePath } from "$lib/utils/path_utils";
+    import type { SubHomepageData } from "$lib/utils/types/sub_homepage";
 
     export let data: SubHomepageData;
+
+    console.log(data);
 </script>
 
 {#if data.subs}
@@ -11,19 +15,61 @@
     <a href={"/s/" + data.full.substring(0, data.full.lastIndexOf("/"))}>Back</a
     >
     <article class="overflowtxt hover-card-anim">
-        <header>
-            <img
-                src="https://placehold.co/50x50/EEE/31343C"
-                class="img-round"
-                alt=""
-            />
-            s/{data.subs.name}
+        <header class="df">
+            <div>
+                <img
+                    src="https://placehold.co/50x50/EEE/31343C"
+                    class="img-round"
+                    alt=""
+                />
+                s/{data.subs.fullPath}
+            </div>
+            <div class="df">
+                {#if !(data.subs.isVirtual || (data.subs.parent && data.subs.parent.isVirtual && data.subs.isBuiltin))}
+                    <button
+                        on:click={() =>
+                            goto(
+                                toAbsolutePath(
+                                    data.subs?.isBuiltin
+                                        ? "../_/manage"
+                                        : "_/manage",
+                                ),
+                            )}
+                        class="btn-margin">Edit</button
+                    >
+                {/if}
+                <button
+                    on:click={() =>
+                        goto(
+                            toAbsolutePath(
+                                data.subs?.isBuiltin
+                                    ? "../_/delete"
+                                    : "_/delete",
+                            ),
+                        )}
+                    class="danger btn-margin">Delete</button
+                >
+            </div>
         </header>
         {data.subs.description}
-        <hr />
-        <SubList subs={data.childs} />
+        {#if !data.subs.isBuiltin}
+            <hr />
+            <SubList showAddButton={true} subs={data.childs} />
+        {/if}
     </article>
 {:else}
     <h1>404: Not Found</h1>
     <h2>Sub {data.full} not found</h2>
 {/if}
+
+<style>
+    .danger {
+        background-color: var(--danger-color);
+        border: var(--danger-color);
+        padding: 10px 15px;
+    }
+
+    .btn-margin {
+        margin-right: 20px;
+    }
+</style>

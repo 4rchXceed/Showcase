@@ -1,6 +1,6 @@
 <script lang="ts">
     import SubList from "$lib/components/SubList.svelte";
-    import type { HomepageData } from "$lib/types/homepage";
+    import type { HomepageData } from "$lib/utils/types/homepage";
 
     export let data: HomepageData;
     const subs = data.subs;
@@ -10,4 +10,4 @@
 <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h2>
 
 <h4>Well-known posts</h4>
-<SubList {subs} />
+<SubList {subs} showAddButton={true} isHomepage={true} />

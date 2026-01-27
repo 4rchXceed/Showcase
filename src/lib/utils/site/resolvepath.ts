@@ -1,5 +1,5 @@
-import { get } from "$lib/net/requ_server";
-import type { Sub } from "$lib/types/db/sub";
+import { get } from "$lib/utils/net/requ_server";
+import type { Sub } from "$lib/utils/types/db/sub";
 
 /**
  * Gett the *real* element of a Sub (not a virtual one), helps for sub creation, so we know where to put it
@@ -13,7 +13,7 @@ export async function getRealElement(sub: Sub, fetch: typeof globalThis.fetch): 
     }
 
     if (sub.isVirtual) {
-        const requ = await get(`subs/${sub.subId}`, fetch);
+        const requ = await get(`subs/${sub.targetId}`, fetch);
         if (requ && requ as Sub) {
             return requ as Sub;
         } else {
@@ -61,6 +61,7 @@ async function next(currentSub: Sub, segments: string[], index: number, fetch: (
                         sub.parent = currentSub;
                         sub.isVirtual = true;
                         sub.description = "(Virtual Link)";
+                        sub.originalId = sub.id;
                         sub.id = sub.targetId; // Small "hack" to make virtual subs work properly
 
                         found = true;
@@ -70,15 +71,40 @@ async function next(currentSub: Sub, segments: string[], index: number, fetch: (
             }
         }
 
+        if (!found) { // builtin sub
+            const builtinSubRequ = await get(`builtin_sub?name=${nextSegment}`, fetch);
+            if (builtinSubRequ && builtinSubRequ as Sub[] && (builtinSubRequ as Sub[]).length > 0) {
+                const sub = builtinSubRequ[0] as Sub;
+                sub.parent = currentSub;
+                sub.description = `"${sub.name}" category of s/${sub.parent.fullPath}`;
+                sub.fullPath = currentSub.fullPath ? `${currentSub.fullPath}/${sub.name}` : sub.name;
+                sub.isBuiltin = true;
+                found = true;
+                return sub;
+            }
+        }
+
     }
     return null;
 }
 
 async function fetchSubByName(name: string, fetch: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>): Promise<Sub | null> {
-    const res = await get(`subs?name=${name}`, fetch);
+    const res = await get(`subs?name=${name}`, fetch, true);
     if (res && Array.isArray(res) && res.length > 0) {
         const sub = res[0] as Sub;
         sub.fullPath = name;
+        return sub;
+    }
+    // Fallback to virtual
+    const resVirtual = await get(`virtual_sub?name=${name}&subId=null`, fetch);
+
+    if (resVirtual && Array.isArray(resVirtual) && resVirtual.length > 0) {
+        const sub = resVirtual[0] as Sub;
+        sub.fullPath = name;
+        sub.isVirtual = true;
+        sub.description = "(Virtual sub)";
+        sub.originalId = sub.id;
+        sub.id = sub.targetId;
         return sub;
     }
     return null;
@@ -95,6 +121,7 @@ export async function resolvePath(path: string, fetch: (input: RequestInfo | URL
     const segments = path ? path.split('/') : [];
     if (segments.length > 0) {
         const root = await fetchSubByName(segments[0], fetch);
+
         if (root) {
             if (segments.length === 1) {
                 return root;

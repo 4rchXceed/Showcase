@@ -76,6 +76,8 @@ At first, I'll do the community system
 
 /s/[a-zA-Z0-9/]*/\_/new -> Create a new sub (/s/_ -> root sub creation)
 
+/s/[a-zA-Z0-9/]*/\_/manafe -> Manage a sub (modify it)
+
 /s/[a-zA-Z0-9/]+/\_/delete -> Delete a sub
 
 

@@ -25,12 +25,6 @@
       "description": "Music sub"
     },
     {
-      "id": "5",
-      "name": "anime",
-      "subId": null,
-      "description": "Anime sub"
-    },
-    {
       "id": "6",
       "name": "projectDIVA",
       "subId": "2",
@@ -43,28 +37,16 @@
       "description": "Hatsune Miku Projet SEKAI (or ColorfulStage) sub"
     },
     {
-      "id": "8",
-      "name": "test",
-      "subId": null,
-      "description": "A test sub"
+      "id": "d29e",
+      "name": "wewfew",
+      "subId": "6",
+      "description": "wefffwf"
     },
     {
-      "id": "9",
-      "name": "subtest",
-      "subId": "8",
-      "description": "A test sub sub"
-    },
-    {
-      "id": "10",
-      "name": "subsubtest",
-      "subId": "9",
-      "description": "A test sub sub sub"
-    },
-    {
-      "id": "11",
-      "name": "subsubsubtest",
-      "subId": "10",
-      "description": "A test sub sub sub sub sub"
+      "id": "ff62",
+      "name": "anime",
+      "description": "Hanime (lmao)",
+      "subId": null
     }
   ],
   "builtin_sub": [
@@ -117,12 +99,6 @@
       "name": "projectDIVA",
       "targetId": "6",
       "id": "fac2"
-    },
-    {
-      "subId": "6",
-      "name": "vocaloid",
-      "targetId": "1",
-      "id": "b0d4"
     }
   ]
 }
