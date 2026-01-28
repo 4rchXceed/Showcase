@@ -5,9 +5,15 @@
     import type { SubHomepageData } from "$lib/utils/types/sub_homepage";
 
     export let data: SubHomepageData;
-
-    console.log(data);
 </script>
+
+<svelte:head>
+    <title>ShowCase - s/{data.full}</title>
+    <meta
+        name="description"
+        content="Check out the sub s/{data.full} on Showcase!"
+    />
+</svelte:head>
 
 {#if data.subs}
     <h1>ShowCase - s/{data.full}</h1>
@@ -25,19 +31,17 @@
                 s/{data.subs.fullPath}
             </div>
             <div class="df">
-                {#if !(data.subs.isVirtual || (data.subs.parent && data.subs.parent.isVirtual && data.subs.isBuiltin))}
-                    <button
-                        on:click={() =>
-                            goto(
-                                toAbsolutePath(
-                                    data.subs?.isBuiltin
-                                        ? "../_/manage"
-                                        : "_/manage",
-                                ),
-                            )}
-                        class="btn-margin">Edit</button
-                    >
-                {/if}
+                <button
+                    on:click={() =>
+                        goto(
+                            toAbsolutePath(
+                                data.subs?.isBuiltin
+                                    ? "../_/manage"
+                                    : "_/manage",
+                            ),
+                        )}
+                    class="btn-margin">Edit</button
+                >
                 <button
                     on:click={() =>
                         goto(

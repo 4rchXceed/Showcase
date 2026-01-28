@@ -50,6 +50,10 @@
     })();
 </script>
 
+<svelte:head>
+    <title>Delete Sub - s/{data.full} - Showcase</title>
+</svelte:head>
+
 {#if data.subs}
     <h1>Delete Sub: s/{data.full}</h1>
 {:else}

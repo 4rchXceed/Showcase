@@ -31,7 +31,7 @@ export async function getRealElement(sub: Sub, fetch: typeof globalThis.fetch): 
  * @param fetch The svelte fetch function
  * @returns The Sub object or null if not found
  */
-async function next(currentSub: Sub, segments: string[], index: number, fetch: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>): Promise<Sub | null> {
+async function next(currentSub: Sub, segments: string[], index: number, fetch: typeof globalThis.fetch): Promise<Sub | null> {
     if (index >= segments.length) {
         return currentSub;
     }
@@ -88,7 +88,7 @@ async function next(currentSub: Sub, segments: string[], index: number, fetch: (
     return null;
 }
 
-async function fetchSubByName(name: string, fetch: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>): Promise<Sub | null> {
+async function fetchSubByName(name: string, fetch: typeof globalThis.fetch): Promise<Sub | null> {
     const res = await get(`subs?name=${name}`, fetch, true);
     if (res && Array.isArray(res) && res.length > 0) {
         const sub = res[0] as Sub;
@@ -117,7 +117,7 @@ async function fetchSubByName(name: string, fetch: (input: RequestInfo | URL, in
  * @param fetch The svelte fetch function.
  * @returns The sub, with his sub-subs, or null
  */
-export async function resolvePath(path: string, fetch: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>): Promise<Sub | null> {
+export async function resolvePath(path: string, fetch: typeof globalThis.fetch): Promise<Sub | null> {
     const segments = path ? path.split('/') : [];
     if (segments.length > 0) {
         const root = await fetchSubByName(segments[0], fetch);
@@ -130,6 +130,61 @@ export async function resolvePath(path: string, fetch: (input: RequestInfo | URL
             }
         }
 
+    }
+    return null;
+}
+
+async function nextReverse(currentSub: Sub, path: string, fetch: typeof globalThis.fetch): Promise<Sub> {
+    const parentRequ = await get(`subs/${currentSub.id}?_embed=sub`, fetch);
+    if (parentRequ && (parentRequ as { sub: Sub }).sub) {
+        const parentSub = (parentRequ as { sub: Sub }).sub as Sub;
+        parentSub.fullPath = path ? `${parentSub.name}/${path}` : parentSub.name;
+        parentSub.subs = [currentSub];
+        return await nextReverse(parentSub, parentSub.name + "/" + path, fetch);
+    }
+    return currentSub;
+}
+
+/**
+ * Get the full path of a Sub by it's id (object)
+ * @param sub the sub object (from getRealElement for example)
+ * @param fetch The svelte fetch function
+ * @returns The Sub with fullPath filled, or null
+ */
+export async function reverseResolvePath(sub: Sub, fetch: typeof globalThis.fetch): Promise<Sub | null> {
+    const untransformedPath = await nextReverse(sub, "", fetch);
+    // Now, we need to transform it to have the full subs tree (one like in resolvePath)
+
+    if (untransformedPath) {
+        // First find the lowest child
+        let lowestChild: Sub | null = untransformedPath;
+        let found = false;
+        let currentSub: Sub | null = untransformedPath;
+        while (!found) {
+            if (currentSub.subs && currentSub.subs.length > 0) {
+                lowestChild = currentSub.subs[0];
+                currentSub = lowestChild;
+            } else {
+                found = true;
+            }
+        }
+
+        // The do the inverse path
+        found = false;
+        currentSub = untransformedPath;
+        let tmpSub: Sub | null = currentSub;
+        while (!found) {
+            if (currentSub.subs && currentSub.subs.length > 0) {
+                tmpSub = currentSub.subs[0];
+                tmpSub.fullPath = currentSub.fullPath ? `${currentSub.fullPath}/${tmpSub.name}` : tmpSub.name;
+                tmpSub.parent = currentSub;
+                currentSub.subs = [];
+                currentSub = tmpSub;
+            } else {
+                found = true;
+            }
+        }
+        return currentSub;
     }
     return null;
 }

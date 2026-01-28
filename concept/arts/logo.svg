@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="500mm"
+   height="500mm"
+   viewBox="0 0 500 500"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   sodipodi:docname="logo.svg"
+   inkscape:export-filename="logo_blackbg.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.50396825"
+     inkscape:cx="761.95276"
+     inkscape:cy="923.6693"
+     inkscape:window-width="1255"
+     inkscape:window-height="1360"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     inkscape:export-bgcolor="#ffffffff" />
+  <defs
+     id="defs1">
+    <rect
+       x="275.00329"
+       y="252.55404"
+       width="1150.524"
+       height="1195.4225"
+       id="rect1" />
+    <rect
+       x="275.0033"
+       y="252.55405"
+       width="1150.524"
+       height="1195.4225"
+       id="rect1-4" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,30.440947,92.807766)"
+       id="text1"
+       style="font-weight:900;font-size:1333.33px;line-height:0.6;font-family:Orbitron;-inkscape-font-specification:'Orbitron Heavy';text-align:center;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect1);display:inline;fill:#186a8a;fill-opacity:1;stroke:#ffffff;stroke-width:0.755906"><tspan
+         x="302.26668"
+         y="985.88618"
+         id="tspan3"><tspan
+           style="font-weight:normal;-inkscape-font-specification:Orbitron"
+           id="tspan2">S</tspan></tspan></text>
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#25b1b5;stroke-width:320.448;stroke-dasharray:none;stroke-opacity:1"
+       id="path3"
+       cx="259.11926"
+       cy="230.90572"
+       rx="1.1708679"
+       ry="16.588642" />
+    <rect
+       style="fill:#186a8a;fill-opacity:1;stroke:none;stroke-width:3.90743;stroke-dasharray:none;stroke-opacity:1"
+       id="rect21"
+       width="28.98053"
+       height="34.153259"
+       x="198.13843"
+       y="259.11929" />
+    <rect
+       style="fill:#186a8a;fill-opacity:1;stroke:none;stroke-width:3.90743;stroke-dasharray:none;stroke-opacity:1"
+       id="rect21-4"
+       width="28.98053"
+       height="34.153259"
+       x="198.20998"
+       y="159.34256" />
+    <rect
+       style="fill:#186a8a;fill-opacity:1;stroke:none;stroke-width:3.90743;stroke-dasharray:none;stroke-opacity:1"
+       id="rect21-1"
+       width="28.98053"
+       height="34.153259"
+       x="238.80763"
+       y="259.63635" />
+    <rect
+       style="fill:#186a8a;fill-opacity:1;stroke:none;stroke-width:3.90743;stroke-dasharray:none;stroke-opacity:1"
+       id="rect21-18"
+       width="28.98053"
+       height="34.153259"
+       x="280.72372"
+       y="259.47919"
+       inkscape:export-filename="logo_whitebg"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+  </g>
+</svg>

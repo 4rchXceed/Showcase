@@ -1,5 +1,4 @@
 <script lang="ts">
-	import favicon from "$lib/assets/favicon.svg";
 	import "@picocss/pico";
 	import "$lib/css/general.css";
 	import "$lib/css/pico.colors.min.css";
@@ -7,8 +6,7 @@
 </script>
 
 <svelte:head>
-	<link rel="icon" href={favicon} />
-	<title>TODO</title>
+	<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 </svelte:head>
 
 {@render children()}

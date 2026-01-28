@@ -33,7 +33,7 @@
 
     async function onCreateClick() {
         if (!data.subs && data.full.length !== 0) return; // To make VSCode happy
-        if (!formData.subName.match(/[a-zA-Z0-9]+/)) {
+        if (!formData.subName.match(/^[a-zA-Z0-9]+$/)) {
             Swal.fire({
                 icon: "error",
                 title: "Invalid subname",
@@ -152,6 +152,10 @@
     }
 </script>
 
+<svelte:head>
+    <title>Add Sub - s/{data.full} - Showcase</title>
+</svelte:head>
+
 {#if data.subs !== null || data.full.length === 0}
     <h1>Sub creation</h1>
     <article>
@@ -229,8 +233,12 @@
     <article>
         <h2>Already existing subs</h2>
         <ul>
-            {#each data.childs as child}
-                <li>s/{child.fullPath}: {child.description}</li>
+            {#each data.parentChilds as child}
+                {#if child.isBuiltin}
+                    <li>{child.name} (Reserved word)</li>
+                {:else}
+                    <li>s/{child.fullPath}: {child.description}</li>
+                {/if}
             {/each}
         </ul>
     </article>

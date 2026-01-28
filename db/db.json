@@ -3,8 +3,8 @@
     {
       "id": "1",
       "name": "vocaloid",
-      "subId": null,
-      "description": "The Vocaloid (VocaSynth in general) sub"
+      "description": "The Vocaloid (VocaSynth in general) sub...\n\n\n\nMiku <3",
+      "subId": null
     },
     {
       "id": "2",
@@ -25,28 +25,28 @@
       "description": "Music sub"
     },
     {
-      "id": "6",
-      "name": "projectDIVA",
-      "subId": "2",
-      "description": "Hatsune Miku Project Diva sub"
-    },
-    {
       "id": "7",
       "name": "projectSEKAI",
       "subId": "2",
       "description": "Hatsune Miku Projet SEKAI (or ColorfulStage) sub"
     },
     {
-      "id": "d29e",
-      "name": "wewfew",
-      "subId": "6",
-      "description": "wefffwf"
-    },
-    {
       "id": "ff62",
       "name": "anime",
-      "description": "Hanime (lmao)",
+      "description": "Anime (lmao)",
       "subId": null
+    },
+    {
+      "id": "c9e1",
+      "name": "projectDiva",
+      "subId": "2",
+      "description": "Project DIVA Sub"
+    },
+    {
+      "id": "e22f",
+      "name": "hatsune",
+      "subId": "1",
+      "description": "Hatsune Miku sub <3"
     }
   ],
   "builtin_sub": [
@@ -95,10 +95,16 @@
       "id": "4c91"
     },
     {
+      "id": "e02c",
       "subId": "1",
-      "name": "projectDIVA",
-      "targetId": "6",
-      "id": "fac2"
+      "targetId": "c9e1",
+      "name": "projectDIVA"
+    },
+    {
+      "id": "2737",
+      "subId": null,
+      "targetId": "e22f",
+      "name": "miku"
     }
   ]
 }

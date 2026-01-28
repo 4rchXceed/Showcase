@@ -21,7 +21,7 @@ export async function autoComplete(query: string, fetch: typeof globalThis.fetch
         return [];
     }
 
-    const children = await getSubChilds(path, fetch);
+    const children = (await getSubChilds(path, fetch, true)).filter(ch => !ch.isBuiltin); // Exclude builtin subs + we don't want an error
 
     return children;
 }
