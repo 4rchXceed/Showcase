@@ -13,7 +13,6 @@ export const load: Kit.Load<{ path?: string | undefined }> = async ({ params, fe
                 redirect(307, "/s/" + params.path + "/_/manage");
             } else {
                 const realPathFull = await reverseResolvePath(realPath, fetch);
-                console.log(realPathFull);
                 if (!realPathFull) {
                     redirect(307, "/s/" + params.path + "/_/manage");
                 }

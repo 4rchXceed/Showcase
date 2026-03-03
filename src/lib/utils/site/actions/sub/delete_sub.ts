@@ -40,8 +40,10 @@ async function getRemoveSubSecure(sub: Sub, fetch: typeof globalThis.fetch, firs
     if (fromVirtualSubs && fromVirtualSubs as Sub[]) {
         const vSubs = fromVirtualSubs as Sub[];
         for (const vSub of vSubs) {
-            vSub.isVirtual = true; // Mark as virtual for deletion
-            subsToDelete.push(vSub);
+            if (vSub.parent) {
+                vSub.isVirtual = true; // Mark as virtual for deletion
+                subsToDelete.push(vSub);
+            }
         }
     }
 

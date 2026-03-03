@@ -39,14 +39,14 @@
     {
       "id": "c9e1",
       "name": "projectDiva",
-      "subId": "2",
-      "description": "Project DIVA Sub"
+      "description": "Project DIVA Sub test",
+      "subId": "2"
     },
     {
       "id": "e22f",
       "name": "hatsune",
-      "subId": "1",
-      "description": "Hatsune Miku sub <3"
+      "description": "Hatsune Miku sub <3 ❤️",
+      "subId": "1"
     }
   ],
   "builtin_sub": [
@@ -83,12 +83,6 @@
   ],
   "virtual_sub": [
     {
-      "subId": "4",
-      "name": "vocaloid",
-      "targetId": "1",
-      "id": "b706"
-    },
-    {
       "subId": "1",
       "name": "projectSEKAI",
       "targetId": "7",
@@ -101,7 +95,7 @@
       "name": "projectDIVA"
     },
     {
-      "id": "2737",
+      "id": "d39e",
       "subId": null,
       "targetId": "e22f",
       "name": "miku"

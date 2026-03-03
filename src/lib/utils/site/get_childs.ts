@@ -24,6 +24,8 @@ export async function getSubChilds(currentSub: Sub | null, fetch: (input: Reques
 
     let children: Sub[] = [];
 
+
+
     if (requReal && requReal as Sub) {
         if (currentSub) {
             const sub = requReal as Sub;
@@ -35,6 +37,7 @@ export async function getSubChilds(currentSub: Sub | null, fetch: (input: Reques
                     } else {
                         subSub.fullPath = subSub.name;
                     }
+
 
                     children.push(subSub);
                 }
@@ -52,13 +55,16 @@ export async function getSubChilds(currentSub: Sub | null, fetch: (input: Reques
         const subs = requVirtual as Sub[];
         if (subs) {
             for (const sub of subs) {
-                if (sub.subId || !currentSub) {
-                    sub.parent = currentSub
+
+                if ((sub.subId || !currentSub) && (!currentSub || sub.subId === currentSub.id)) {
+                    sub.parent = currentSub;
+
                     if (currentSub) {
                         sub.fullPath = currentSub.fullPath ? `${currentSub.fullPath}/${sub.name}` : sub.name;
                     } else {
                         sub.fullPath = sub.name;
                     }
+
                     sub.description = "(Virtual Link)";
                     sub.isVirtual = true;
                     children.push(sub);
@@ -81,6 +87,9 @@ export async function getSubChilds(currentSub: Sub | null, fetch: (input: Reques
             children.push(sub);
         }
     }
+
+
+
 
     return children;
 }

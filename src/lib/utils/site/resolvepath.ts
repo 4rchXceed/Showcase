@@ -89,7 +89,7 @@ async function next(currentSub: Sub, segments: string[], index: number, fetch: t
 }
 
 async function fetchSubByName(name: string, fetch: typeof globalThis.fetch): Promise<Sub | null> {
-    const res = await get(`subs?name=${name}`, fetch, true);
+    const res = await get(`subs?name=${name}&subId=null`, fetch, true);
     if (res && Array.isArray(res) && res.length > 0) {
         const sub = res[0] as Sub;
         sub.fullPath = name;
@@ -176,7 +176,7 @@ export async function reverseResolvePath(sub: Sub, fetch: typeof globalThis.fetc
         while (!found) {
             if (currentSub.subs && currentSub.subs.length > 0) {
                 tmpSub = currentSub.subs[0];
-                tmpSub.fullPath = currentSub.fullPath ? `${currentSub.fullPath}/${tmpSub.name}` : tmpSub.name;
+                tmpSub.fullPath = currentSub.fullPath ? `${currentSub.fullPath}${currentSub.fullPath.endsWith("/") ? "" : "/"}${tmpSub.name}` : tmpSub.name;
                 tmpSub.parent = currentSub;
                 currentSub.subs = [];
                 currentSub = tmpSub;

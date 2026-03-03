@@ -35,6 +35,15 @@
                     on:click={() =>
                         goto(
                             toAbsolutePath(
+                                data.subs?.isBuiltin ? "../_/tree" : "_/tree",
+                            ),
+                        )}
+                    class="btn-margin">Tree view</button
+                >
+                <button
+                    on:click={() =>
+                        goto(
+                            toAbsolutePath(
                                 data.subs?.isBuiltin
                                     ? "../_/manage"
                                     : "_/manage",
